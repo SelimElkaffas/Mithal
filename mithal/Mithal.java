@@ -3,7 +3,6 @@ package mithal;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -45,7 +44,7 @@ public class Mithal {
 
     private static void run(String source) {
         Tokenizer tokenizer = new Tokenizer(source);
-        Token[] tokens = tokenizer.scanTokens();
+        List<Token> tokens = tokenizer.scanTokens();
 
         for (Token token : tokens) {
             System.out.println(token);
@@ -54,6 +53,14 @@ public class Mithal {
 
     static void error(int line, String message) {
         report(line, "", message);
+    }
+
+    static void error(Token token, String message) {
+        if(token.type == TokenType.EOF) {
+            report(token.line, " at end", message);
+        } else {
+            report(token.line, "at '" + token.lexeme + "'", message);
+        }
     }
 
     private static void report(int line, String where, String message) {
