@@ -37,6 +37,7 @@ public class Mithal {
         for (;;) {
             System.out.print("> ");
             String line = reader.readLine();
+            if (line == null) break;
             run(line);
             hadError = false;
         }
