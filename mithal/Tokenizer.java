@@ -144,8 +144,15 @@ class Tokenizer {
     }
 
     private boolean isDigit(char c) {
-        // TODO: Write proper regex
-        return Pattern.matches("[0-9٠١٢٣٤٥٦٧٨٩]", String.valueOf(c));
+        return isEasternArabicNumeral(c) || isWesternArabicNumeral(c);
+    }
+
+    private boolean isEasternArabicNumeral(char c) {
+        return Pattern.matches("[١٢٣٤٥٦٧٨٩٠]", String.valueOf(c));
+    }
+
+    private boolean isWesternArabicNumeral(char c) {
+        return Pattern.matches("[0-9]", String.valueOf(c));
     }
 
     private boolean isAlpha(char c) {
@@ -169,7 +176,19 @@ class Tokenizer {
             while(!isDigit(peek())) advance();
         }
 
-        addToken(TokenType.NUMBER, Double.parseDouble(source.substring(start, current)));
+        String literal = source.substring(start, current);
+        if (isEasternArabicNumeral(literal.charAt(0))) {
+            StringBuilder sb = new StringBuilder();
+            for (char c : literal.toCharArray()) {
+                if (isEasternArabicNumeral(c)) {
+                    sb.append(Character.getNumericValue(c));
+                } else {
+                    sb.append(c);
+                }
+            }
+            literal = sb.toString();
+        }
+        addToken(TokenType.NUMBER, Double.parseDouble(literal));
     }
 
     private void string() {
