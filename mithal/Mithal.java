@@ -46,13 +46,13 @@ public class Mithal {
         Tokenizer tokenizer = new Tokenizer(source);
         List<Token> tokens = tokenizer.scanTokens();
 
-        for (Token token : tokens) {
-            System.out.println(token);
-        }
-    }
+        Parser parser = new Parser(tokens);
+        Expr expression = parser.parse();
+        
+        if (hadError) return;
+        AstPrinter printer = new AstPrinter();
+        System.out.println(printer.print(expression));
 
-    static void error(int line, String message) {
-        report(line, "", message);
     }
 
     static void error(Token token, String message) {
