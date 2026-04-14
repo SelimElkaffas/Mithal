@@ -150,7 +150,10 @@ class Tokenizer {
 
     private boolean isAlpha(char c) {
         // TODO: Write proper regex
-        return Pattern.matches("[ًٌَُّْدجحخهعغفقثصضطنتالبيسشظزوةىلارؤءئ]", String.valueOf(c));
+        // English characters are supported momentarily for debugging until the language is complete
+        return Pattern.matches("[ًٌَُّْدجحخهعغفقثصضطنتالبيسشظزوةىلارؤءئ]", String.valueOf(c)) ||
+                (c >= 'a') && (c <= 'z') ||
+                (c >= 'A') && (c <= 'Z') || c == '_';
     }
 
     private boolean isAlphaNumeric(char c) {
@@ -159,7 +162,7 @@ class Tokenizer {
 
     // TODO: Disallow numbers that mix between Eastern and Western Arabic numerals
     private void number() {
-        while(!isDigit(peek())) advance();
+        while(isDigit(peek())) advance();
 
         if (peek() == '.' && isDigit(peekNext())) {
             advance();
