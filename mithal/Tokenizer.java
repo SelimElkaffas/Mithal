@@ -28,7 +28,7 @@ class Tokenizer {
         keywords.put("طالما", TokenType.WHILE);
         keywords.put("دالة", TokenType.FUN);
         keywords.put("ارجع", TokenType.RETURN);
-        keywords.put("صافر", TokenType.NIL);
+        keywords.put("مصفر", TokenType.NIL);
         keywords.put("قل", TokenType.PRINT);
         keywords.put("الأصل", TokenType.SUPER);
         keywords.put("فرعي", TokenType.THIS);
@@ -148,7 +148,7 @@ class Tokenizer {
     }
 
     private boolean isEasternArabicNumeral(char c) {
-        return Pattern.matches("[١٢٣٤٥٦٧٨٩٠]", String.valueOf(c));
+        return Pattern.matches("[٠-٩]", String.valueOf(c));
     }
 
     private boolean isWesternArabicNumeral(char c) {
